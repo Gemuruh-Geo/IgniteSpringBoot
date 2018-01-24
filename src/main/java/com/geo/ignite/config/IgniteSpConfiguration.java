@@ -15,18 +15,6 @@ public class IgniteSpConfiguration {
     public Ignite ignite(){
         IgniteConfiguration cfg = new IgniteConfiguration();
 
-        DataStorageConfiguration dataStorageCfg = new DataStorageConfiguration();
-
-        /*
-        *
-        * Data will persisted to disk
-        * with default path at $IGNITE_HOME/work/db
-        *
-        * */
-        dataStorageCfg.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
-
-        cfg.setDataStorageConfiguration(dataStorageCfg);
-
         // Setting some custom name for the node.
         cfg.setIgniteInstanceName("springDataNode");
 
