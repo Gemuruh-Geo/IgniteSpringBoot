@@ -64,6 +64,33 @@
             <version>${ignite.version}</version>
         </dependency>
 
+        <!--Database and Jpa Configuration-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.39</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+            <version>5.1.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.6.5</version>
+        </dependency>
+
+        <!--Internal Lib-->
+        <dependency>
+            <groupId>co.id.artslv.lib</groupId>
+            <artifactId>artslv-lib</artifactId>
+            <version>2.19.3-SNAPSHOT</version>
+        </dependency>
         <!--Testing-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -77,6 +104,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
 			</plugin>
 		</plugins>
 	</build>
