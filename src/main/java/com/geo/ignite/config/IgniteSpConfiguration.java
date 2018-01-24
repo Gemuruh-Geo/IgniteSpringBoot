@@ -4,17 +4,28 @@ import com.geo.ignite.model.Person;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.configuration.CacheConfiguration;
+import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.springdata.repository.config.EnableIgniteRepositories;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableIgniteRepositories(basePackages = "com.geo.ignite.igniteRepository")
 public class IgniteSpConfiguration {
-    @Bean(name = "igniteInstance") //To Recognize by IgniteRepositoryFactoryBean, the bean name must be igniteInstance
+    @Bean(name = "igniteInstance") //To be recognized by IgniteRepositoryFactoryBean, the bean name must be igniteInstance
     public Ignite ignite(){
         IgniteConfiguration cfg = new IgniteConfiguration();
+
+        DataStorageConfiguration dataStorageCfg = new DataStorageConfiguration();
+
+        /*
+        *
+        * Data will persisted to disk
+        * with default path at $IGNITE_HOME/work/db
+        *
+        * */
+        dataStorageCfg.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+
+        cfg.setDataStorageConfiguration(dataStorageCfg);
 
         // Setting some custom name for the node.
         cfg.setIgniteInstanceName("springDataNode");
