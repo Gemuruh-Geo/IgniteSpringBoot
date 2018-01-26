@@ -1,30 +1,19 @@
-package com.geo.ignite.config;
+package com.geo.ignite.starter;
 
-import co.id.artslv.lib.inventory.Inventory;
-import com.geo.ignite.jpaRepository.InventoryRepository;
+import com.geo.ignite.config.IgniteSpConfiguration;
+import com.geo.ignite.config.InventoryStore;
 import com.geo.ignite.model.CInventory;
 import com.geo.ignite.model.Person;
-import org.apache.ignite.Ignite;
 import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.configuration.CacheConfiguration;
-import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.cache.configuration.FactoryBuilder;
 
-@Configuration
-public class IgniteSpConfiguration {
+public class IgniteStarter {
 
-    public static final String INVENTORY_CACHE = "inventoryCache";
-    @Autowired private InventoryRepository inventoryRepository;
-
-
-    @Bean(name = "igniteInstance") //To be recognized by IgniteRepositoryFactoryBean, the bean name must be igniteInstance
-    public Ignite ignite(){
+    public static void main(String[] arts){
         IgniteConfiguration cfg = new IgniteConfiguration();
 
         // Setting some custom name for the node.
@@ -39,7 +28,7 @@ public class IgniteSpConfiguration {
         // Setting SQL schema for the cache.
         ccfg.setIndexedTypes(Long.class, Person.class);
 
-        CacheConfiguration<String,CInventory> inventoryCacheConfiguration = new CacheConfiguration<>(INVENTORY_CACHE);
+        CacheConfiguration<String,CInventory> inventoryCacheConfiguration = new CacheConfiguration<>(IgniteSpConfiguration.INVENTORY_CACHE);
         inventoryCacheConfiguration.setAtomicityMode(CacheAtomicityMode.TRANSACTIONAL);
         inventoryCacheConfiguration.setCacheStoreFactory(FactoryBuilder.factoryOf(InventoryStore.class));
         inventoryCacheConfiguration.setWriteThrough(true);
@@ -48,13 +37,10 @@ public class IgniteSpConfiguration {
 
         inventoryCacheConfiguration.setIndexedTypes(String.class,CInventory.class);
 
-        InventoryStore.setInventoryRepository(inventoryRepository);
+        //InventoryStore.setInventoryRepository(inventoryRepository);
 
         cfg.setCacheConfiguration(ccfg,inventoryCacheConfiguration);
 
-        return Ignition.start(cfg);
+        Ignition.start(cfg);
     }
-
-
-
 }
