@@ -19,6 +19,7 @@ import javax.cache.configuration.FactoryBuilder;
 public class IgniteSpConfiguration {
 
     public static final String INVENTORY_CACHE = "inventoryCache";
+    @Autowired private InventoryRepository inventoryRepository;
 
 
     @Bean(name = "igniteInstance") //To be recognized by IgniteRepositoryFactoryBean, the bean name must be igniteInstance
@@ -43,6 +44,8 @@ public class IgniteSpConfiguration {
         inventoryCacheConfiguration.setWriteThrough(true);
         inventoryCacheConfiguration.setReadThrough(true);
         inventoryCacheConfiguration.setWriteBehindEnabled(true);
+
+        InventoryStore.setInventoryRepository(inventoryRepository);
 
         cfg.setCacheConfiguration(ccfg,inventoryCacheConfiguration);
 

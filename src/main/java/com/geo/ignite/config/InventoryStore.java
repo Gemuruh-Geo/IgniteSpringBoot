@@ -5,7 +5,6 @@ import com.geo.ignite.jpaRepository.InventoryRepository;
 import org.apache.ignite.IgniteException;
 import org.apache.ignite.cache.store.CacheStoreAdapter;
 import org.apache.ignite.lifecycle.LifecycleAware;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.cache.Cache;
 import javax.cache.integration.CacheLoaderException;
@@ -13,11 +12,11 @@ import javax.cache.integration.CacheWriterException;
 
 public class InventoryStore extends CacheStoreAdapter<String, Inventory> implements LifecycleAware{
 
-    private InventoryRepository inventoryRepository;
+    private static InventoryRepository inventoryRepository;
 
     @Override
     public Inventory load(String s) throws CacheLoaderException {
-        return null;
+        return inventoryRepository.findOne(s);
     }
 
     @Override
@@ -32,15 +31,15 @@ public class InventoryStore extends CacheStoreAdapter<String, Inventory> impleme
 
     @Override
     public void start() throws IgniteException {
-        AnnotationConfigApplicationContext configApplicationContext = new AnnotationConfigApplicationContext();
-        configApplicationContext.register(RepositoryConfig.class);
-        configApplicationContext.refresh();
 
-        inventoryRepository = configApplicationContext.getBean(InventoryRepository.class);
     }
 
     @Override
     public void stop() throws IgniteException {
 
+    }
+
+    public static void setInventoryRepository(InventoryRepository inventoryRepository) {
+        InventoryStore.inventoryRepository = inventoryRepository;
     }
 }
